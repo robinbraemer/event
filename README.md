@@ -1,7 +1,7 @@
 # event
 
 Go event library to subscribe and fire events used to decouple the event
-source and sink in complex or ad-don based systems.
+source and sink in complex or add-on based systems.
 
 ```go
 // Custom event type
