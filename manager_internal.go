@@ -54,6 +54,9 @@ func (m *manager) HasSubscriber(events ...Event) bool {
 	if len(events) == 0 {
 		return len(m.subscribers) != 0
 	}
+	if m.subscribers[anyType] != nil {
+		return true
+	}
 	for _, event := range events {
 		if m.subscribers[typeOf(event)] != nil {
 			return true
