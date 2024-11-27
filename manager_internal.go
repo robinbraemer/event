@@ -171,16 +171,24 @@ func (m *manager) Fire(event Event) {
 	m.fire(event)
 }
 
+var anyType = typeOf(any(nil))
+
 func (m *manager) fire(event Event) {
 	eventType := typeOf(event)
+
 	m.mu.RLock()
 	list := m.subscribers[eventType]
+	anyList := m.subscribers[anyType]
 	m.mu.RUnlock()
 
+	m.fireSubscribers(event, anyList)
+	m.fireSubscribers(event, list)
+}
+
+func (m *manager) fireSubscribers(event Event, list *subscriberList) {
 	if list == nil {
 		return
 	}
-
 	list.wg.Add(1)
 	defer list.wg.Done()
 

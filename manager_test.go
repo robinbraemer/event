@@ -42,9 +42,15 @@ func TestPriorityAndCorrectType(t *testing.T) {
 		noPtr = true
 	})
 
+	var calledAny int
+	m.Subscribe(any(nil), 10, func(e Event) {
+		calledAny++
+	})
+
 	e := &myEvent{s: "_"}
 	m.Fire(e)
 	require.False(t, noPtr)
 	require.Equal(t, "_abc", e.s)
 	require.True(t, m.HasSubscriber(&myEvent{}))
+	require.Equal(t, calledAny, 1)
 }
